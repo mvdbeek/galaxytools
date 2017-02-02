@@ -1,7 +1,7 @@
-<tool id="repeatmasker_wrapper" name="RepeatMasker" version="0.1.2">
+<tool id="repeatmasker_wrapper" name="RepeatMasker" version="4.0.6">
     <description>Masks different kind of repeats</description>
     <requirements>
-        <requirement type="binary">RepeatMasker</requirement>
+        <requirement type="package" version="4.0.6">repeatmasker</requirement>
     </requirements>
     <command>
 <![CDATA[
@@ -9,10 +9,9 @@
 ## Lines starting hash hash are comments. Galaxy will turn newlines into spaces
 
 ## create temp directory
-#import tempfile, os
-#set $dirname = os.path.abspath( tempfile.mkdtemp() )
+mkdir tmp
 #set $input_filename = os.path.split( str($query) )[-1]
-#set $output_basename = os.path.join( $dirname, $input_filename )
+#set $output_basename = os.path.join( 'tmp', $input_filename )
 
 
 RepeatMasker
@@ -27,7 +26,7 @@ $norna
 #end if
 
 
--dir $dirname
+-dir tmp/
 
 #if $adv_opts.adv_opts_selector=="advanced":
 
@@ -114,9 +113,6 @@ cp $mask_sequence_file $output_mask;
 ## than tabs. Remove the header and replace the whitespaces with tab
 #set $standard_file = $output_basename + '.out'
 tail -n +4 $standard_file | tr -s ' ' '\t' > $output_std;
-
-## Delete all temporary files
-rm $dirname -r
 
 ]]>
     </command>
